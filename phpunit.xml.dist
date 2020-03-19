@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    verbose="true"
+>
+    <php>
+        <!-- <ini name="memory_limit" value="-1"/> -->
+        <!-- <env name="APP_ENV" value="testing"/> -->
+    </php>
+
+    <!-- Add any additional test suites you want to run here -->
+    <testsuites>
+        <testsuite name="Tests">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- Ignore vendor tests in code coverage reports -->
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
