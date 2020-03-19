@@ -14,11 +14,10 @@
 - [x] Make interfaces
 - [ ] Implement curl transport
 - [ ] Implement stream transport
-- [ ] Implement mockup transport
-- [ ] Implement simple client
-- [ ] Implement middleware client
+- [x] Implement mockup transport
+- [x] Implement simple client
+- [x] Implement middleware client
 - [ ] Implement async client
-- [ ] Implement mock client
 - [ ] Implement batch client
 - [ ] Implement pool client
 - [ ] Implement cookie middleware
@@ -26,6 +25,7 @@
 - [ ] Implement uri middleware
 - [ ] Implement history middleware
 - [ ] Implement log middleware
+- [ ] Implement chain middleware
 
 ## Requirements
 
