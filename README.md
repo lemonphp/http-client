@@ -6,7 +6,6 @@
 [![Build Status](https://github.com/lemonphp/http-client/workflows/CI/badge.svg)](https://github.com/lemonphp/http-client/actions)
 [![Coverage Status](https://img.shields.io/coveralls/github/lemonphp/http-client/master.svg)](https://coveralls.io/github/lemonphp/http-client?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/lemonphp/http-client.svg)](https://packagist.org/packages/lemonphp/http-client)
-[![Requires PHP](https://img.shields.io/travis/php-v/lemonphp/http-client.svg)](https://travis-ci.org/lemonphp/http-client)
 
 
 ## Main features
