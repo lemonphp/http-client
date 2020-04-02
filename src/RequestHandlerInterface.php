@@ -5,6 +5,14 @@ namespace Lemon\Http\Client;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * The request handler interface
+ *
+ * @package     Lemon\Http\Client
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 interface RequestHandlerInterface
 {
     /**

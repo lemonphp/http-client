@@ -2,14 +2,21 @@
 
 namespace Lemon\Http\Client\Transport;
 
+use Lemon\Http\Client\ClientOptions;
 use Lemon\Http\Client\TransportInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Mockup transport
+ * The Mockup transport
  *
- * It alway return fixed response
+ * It alway return fixed response.
+ * It is very helpful for testing.
+ *
+ * @package     Lemon\Http\Client\Transport
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
  */
 class MockTransport implements TransportInterface
 {
@@ -27,10 +34,10 @@ class MockTransport implements TransportInterface
      * Sends a PSR-7 request and returns a PSR-7 response.
      *
      * @param  \Psr\Http\Message\RequestInterface $request
+     * @param  \Lemon\Http\Client\ClientOptions $options
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Psr\Http\Client\ClientExceptionInterface If an error happens while processing the request.
      */
-    public function send(RequestInterface $request): ResponseInterface
+    public function send(RequestInterface $request, ClientOptions $options): ResponseInterface
     {
         return $this->response;
     }

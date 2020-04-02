@@ -7,6 +7,14 @@ use Psr\Http\Message\RequestInterface;
 use RuntimeException;
 use Throwable;
 
+/**
+ * The request exception
+ *
+ * @package     Lemon\Http\Client\Exception
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 class RequestException extends RuntimeException implements RequestExceptionInterface
 {
     /**

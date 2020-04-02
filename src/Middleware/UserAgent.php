@@ -2,48 +2,32 @@
 
 namespace Lemon\Http\Client\Middleware;
 
-use Lemon\Http\Client\Handler\MiddlewareHandler;
 use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * The HTTP client
+ * The UserAgent middleware
  *
  * @package     Lemon\Http\Client\Middleware
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
-class MiddlewaresChain implements MiddlewareInterface
+final class UserAgent implements MiddlewareInterface
 {
     /**
-     * Middeware list
-     *
-     * @var \Lemon\Http\Client\MiddlewareInterface[]
+     * @var string
      */
-    protected $middlewares;
+    private $userAgent;
 
     /**
-     * Constructor
-     *
-     * @param array $middlewares
+     * @param string $userAgent
      */
-    public function __construct(array $middlewares)
+    public function __construct(string $userAgent = null)
     {
-        $this->middlewares = $middlewares;
-    }
-
-    /**
-     * Add middleware
-     *
-     * @param  \Lemon\Http\Client\MiddlewareInterface $middleware
-     * @return void
-     */
-    public function add(MiddlewareInterface $middleware)
-    {
-        $this->middlewares[] = $middleware;
+        $this->userAgent = $userAgent ?: sprintf('HTTPClient PHP/%s', PHP_VERSION);
     }
 
     /**
@@ -53,8 +37,8 @@ class MiddlewaresChain implements MiddlewareInterface
      */
     public function process(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        foreach ($this->middlewares as $middleware) {
-            $handler = new MiddlewareHandler($middleware, $handler);
+        if (!$request->hasHeader('User-Agent')) {
+            $request = $request->withHeader('User-Agent', $this->userAgent);
         }
 
         return $handler->handle($request);

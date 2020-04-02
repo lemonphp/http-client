@@ -2,58 +2,37 @@
 
 namespace Lemon\Http\Client;
 
-use Lemon\Http\Client\Middleware\MiddlewaresChain;
+use Lemon\Http\Client\Handler\TransportHandler;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * The HTTP client
+ *
+ * @package     Lemon\Http\Client
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 class Client implements ClientInterface
 {
     /**
-     * Client options
+     * Transport handler
      *
-     * @var \Lemon\Http\Client\RequestOptions
+     * @var \Lemon\Http\Client\RequestHandlerInterface
      */
-    protected $options;
-
-    /**
-     * Client transport
-     *
-     * @var \Lemon\Http\Client\TransportInterface
-     */
-    protected $transport;
-
-    /**
-     * Middleware list
-     *
-     * @var \Lemon\Http\Client\MiddlewareInterface[]
-     */
-    protected $middlewares;
+    protected $handler;
 
     /**
      * Client constructor
      *
      * @param  \Lemon\Http\Client\TransportInterface  $transport
-     * @param  \Lemon\Http\Client\RequestOptions|null $options
+     * @param  \Lemon\Http\Client\ClientOptions|null $options
      */
-    public function __construct(TransportInterface $transport, ?RequestOptions $options = null)
+    public function __construct(TransportInterface $transport, ?ClientOptions $options = null)
     {
-        $this->transport = $transport;
-        $this->options = $options;
-        $this->middlewares = [];
-    }
-
-    /**
-     * Set middleware list
-     *
-     * @param  array $middlewares
-     * @return self
-     */
-    public function setMiddlewares(array $middlewares)
-    {
-        $this->middlewares = $middlewares;
-
-        return $this;
+        $this->handler = new TransportHandler($transport, $options ?? new ClientOptions());
     }
 
     /**
@@ -65,30 +44,6 @@ class Client implements ClientInterface
      */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
-        $transport = $this->transport;
-        $handler = new class ($transport) implements RequestHandlerInterface
-        {
-            /** @var \Lemon\Http\Client\TransportInterface */
-            private $transport;
-
-            /**
-             * @param \Lemon\Http\Client\TransportInterface $transport
-             */
-            public function __construct(TransportInterface $transport)
-            {
-                $this->transport = $transport;
-            }
-
-            /**
-             * @param  \Psr\Http\Message\RequestInterface $request
-             * @return \Psr\Http\Message\ResponseInterface
-             */
-            public function handle(RequestInterface $request): ResponseInterface
-            {
-                return $this->transport->send($request);
-            }
-        };
-
-        return (new MiddlewaresChain($this->middlewares))->process($request, $handler);
+        return $this->handler->handle($request);
     }
 }
