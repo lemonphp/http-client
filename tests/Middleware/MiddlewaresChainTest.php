@@ -4,13 +4,11 @@ namespace Tests\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface;
 use Lemon\Http\Client\Middleware\MiddlewaresChain;
-use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Factory\RequestFactory;
 use Slim\Psr7\Factory\ResponseFactory;
+use Tests\TestMiddleware;
 
 /**
  * The middlewares chain test
@@ -23,13 +21,6 @@ use Slim\Psr7\Factory\ResponseFactory;
 class MiddlewaresChainTest extends TestCase
 {
     /**
-     * Testing logs
-     *
-     * @var array
-     */
-    public static $logs = [];
-
-    /**
      * Test middleware shoule process
      *
      * @return void
@@ -37,10 +28,6 @@ class MiddlewaresChainTest extends TestCase
     public function testItShouldProcessMiddlewaresChain()
     {
         // Prepare data for test
-        $one = $this->makeMiddeware('one');
-        $two = $this->makeMiddeware('two');
-        $three = $this->makeMiddeware('three');
-        $four = $this->makeMiddeware('four');
         $request = (new RequestFactory())->createRequest('GET', 'https://example.com');
         $response = (new ResponseFactory())->createResponse(StatusCodeInterface::STATUS_OK);
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
@@ -49,10 +36,17 @@ class MiddlewaresChainTest extends TestCase
             ->with($request)
             ->willReturn($response);
 
-        $chain = new MiddlewaresChain([$one, $two, $three, $four]);
-        self::$logs = [];
+        $middlewares = [
+            new TestMiddleware('one'),
+            new TestMiddleware('two'),
+            new TestMiddleware('three'),
+            new TestMiddleware('four'),
+        ];
+        $chain = new MiddlewaresChain($middlewares);
 
-        // Aserts
+        // empty logs
+        TestMiddleware::$logs = [];
+
         static::assertSame($response, $chain->process($request, $handler));
         static::assertSame([
             'four-pre',
@@ -63,47 +57,6 @@ class MiddlewaresChainTest extends TestCase
             'two-post',
             'three-post',
             'four-post',
-        ], self::$logs);
-    }
-
-    /**
-     * Make middeware for test
-     *
-     * @param  string $prefix
-     * @return \Lemon\Http\Client\MiddlewareInterface
-     */
-    protected function makeMiddeware(string $prefix): MiddlewareInterface
-    {
-        return new class ($prefix) implements MiddlewareInterface
-        {
-            /**
-             * @var string
-             */
-            protected $prefix;
-
-            /**
-             * @param string $prefix
-             */
-            public function __construct(string $prefix)
-            {
-                $this->prefix = $prefix;
-            }
-
-            /**
-             * @param  \Psr\Http\Message\RequestInterface $request
-             * @param  \Lemon\Http\Client\RequestHandlerInterface $handler
-             * @return \Psr\Http\Message\ResponseInterface
-             */
-            public function process(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-            {
-                MiddlewaresChainTest::$logs[] = "{$this->prefix}-pre";
-
-                $response = $handler->handle($request);
-
-                MiddlewaresChainTest::$logs[] = "{$this->prefix}-post";
-
-                return $response;
-            }
-        };
+        ], TestMiddleware::$logs);
     }
 }
