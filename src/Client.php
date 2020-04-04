@@ -8,7 +8,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * The HTTP client
+ * The simple HTTP client
  *
  * @package     Lemon\Http\Client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
@@ -20,19 +20,18 @@ class Client implements ClientInterface
     /**
      * Transport handler
      *
-     * @var \Lemon\Http\Client\RequestHandlerInterface
+     * @var \Lemon\Http\Client\TransportInterface
      */
-    protected $handler;
+    protected $transport;
 
     /**
      * Client constructor
      *
      * @param  \Lemon\Http\Client\TransportInterface  $transport
-     * @param  \Lemon\Http\Client\ClientOptions|null $options
      */
-    public function __construct(TransportInterface $transport, ?ClientOptions $options = null)
+    public function __construct(TransportInterface $transport)
     {
-        $this->handler = new TransportHandler($transport, $options ?? new ClientOptions());
+        $this->transport = $transport;
     }
 
     /**
@@ -44,6 +43,6 @@ class Client implements ClientInterface
      */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
-        return $this->handler->handle($request);
+        return $this->transport->send($request);
     }
 }

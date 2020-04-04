@@ -47,8 +47,8 @@ class MiddlewaresChainTest extends TestCase
         // empty logs
         TestMiddleware::$logs = [];
 
-        static::assertSame($response, $chain->process($request, $handler));
-        static::assertSame([
+        $this->assertSame($response, $chain->process($request, $handler));
+        $this->assertSame([
             'four-pre',
             'three-pre',
             'two-pre',

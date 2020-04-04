@@ -19,9 +19,8 @@ interface TransportInterface
      * Sends a PSR-7 request and returns a PSR-7 response.
      *
      * @param  \Psr\Http\Message\RequestInterface $request
-     * @param  \Lemon\Http\Client\ClientOptions  $options
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \Psr\Http\Client\ClientExceptionInterface If an error happens while processing the request.
      */
-    public function send(RequestInterface $request, ClientOptions $options): ResponseInterface;
+    public function send(RequestInterface $request): ResponseInterface;
 }

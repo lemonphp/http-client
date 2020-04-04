@@ -28,16 +28,15 @@ class ClientTest extends TestCase
     {
         $request = (new RequestFactory())->createRequest('GET', 'https://example.com');
         $response = (new ResponseFactory())->createResponse(200);
-        $options = new ClientOptions();
 
         $transport = $this->getMockForAbstractClass(TransportInterface::class);
         $transport->expects($this->once())
             ->method('send')
-            ->with($request, $options)
+            ->with($request)
             ->willReturn($response);
 
-        $client = new Client($transport, $options);
+        $client = new Client($transport);
 
-        static::assertSame($response, $client->sendRequest($request));
+        $this->assertSame($response, $client->sendRequest($request));
     }
 }

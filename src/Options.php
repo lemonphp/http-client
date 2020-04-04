@@ -18,38 +18,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @property-read bool $follow_location
  * @property-read int  $timeout
  */
-final class ClientOptions implements ArrayAccess, Countable
+class Options implements ArrayAccess, Countable
 {
     /**
      * @var array
      */
-    protected $options;
+    protected $resolved;
 
     /**
      * Constructor
      *
      * @param  array $options
      */
-    public function __construct(array $options = [])
+    final public function __construct(array $options = [])
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
-
-        $this->options = $resolver->resolve($options);
-    }
-
-    /**
-     * Configure options
-     *
-     * @param  \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     * @return void
-     */
-    protected function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'follow_location' => true,
-            'timeout' => 10 * 1000,
-        ]);
+        $this->resolved = $resolver->resolve($options);
     }
 
     /**
@@ -60,7 +45,7 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function __isset($name)
     {
-        return $this->offsetExists($name);
+        return array_key_exists($name, $this->resolved);
     }
 
     /**
@@ -71,7 +56,7 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function __get($name)
     {
-        return $this->offsetGet($name);
+        return $this->resolved[$name] ?? null;
     }
 
     /**
@@ -83,7 +68,7 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function __set($name, $value)
     {
-        $this->offsetSet($name, $value);
+        throw new LogicException('Client options is readonly object');
     }
 
     /**
@@ -95,15 +80,16 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function __unset($name)
     {
-        $this->offsetUnset($name);
+        throw new LogicException('Client options is readonly object');
     }
 
+    // @codeCoverageIgnoreStart
     /**
      * {@inheritDoc}
      */
     public function offsetExists($offset)
     {
-        return array_key_exists($offset, $this->options);
+        return $this->__isset((string) $offset);
     }
 
     /**
@@ -111,7 +97,7 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function offsetGet($offset)
     {
-        return $this->options[$offset];
+        return $this->__get((string) $offset);
     }
 
     /**
@@ -119,7 +105,7 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function offsetSet($offset, $value)
     {
-        throw new LogicException('Client options is readonly object');
+        $this->__set((string) $offset, $value);
     }
 
     /**
@@ -127,7 +113,7 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function offsetUnset($offset)
     {
-        throw new LogicException('Client options is readonly object');
+        $this->__unset((string) $offset);
     }
 
     /**
@@ -135,6 +121,21 @@ final class ClientOptions implements ArrayAccess, Countable
      */
     public function count()
     {
-        return count($this->options);
+        return count($this->resolved);
+    }
+    // @codeCoverageIgnoreEnd
+
+    /**
+     * Configure options
+     *
+     * @param  \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     * @return void
+     */
+    protected function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'follow_location' => false,
+            'timeout' => 10 * 1000,
+        ]);
     }
 }

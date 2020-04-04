@@ -4,6 +4,7 @@ namespace Tests\Middleware;
 
 use Lemon\Http\Client\Middleware\UserAgent;
 use Lemon\Http\Client\RequestHandlerInterface;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Slim\Psr7\Factory\RequestFactory;
@@ -35,12 +36,12 @@ class UserAgentTest extends TestCase
             ->method('handle')
             ->withAnyParameters()
             ->willReturnCallback(function (RequestInterface $request) use ($response, $userAgent) {
-                static::assertSame($userAgent, $request->getHeaderLine('User-Agent'));
+                Assert::assertSame($userAgent, $request->getHeaderLine('User-Agent'));
                 return $response;
             });
 
         $middleware = new UserAgent($userAgent);
-        static::assertEmpty($request->getHeaderLine('User-Agent'));
+        $this->assertEmpty($request->getHeaderLine('User-Agent'));
 
         $middleware->process($request, $handler);
     }

@@ -2,7 +2,6 @@
 
 namespace Tests\Transport;
 
-use Lemon\Http\Client\ClientOptions;
 use Lemon\Http\Client\Transport\MockTransport;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\RequestFactory;
@@ -27,10 +26,9 @@ class MockTransportTest extends TestCase
     {
         $request = (new RequestFactory())->createRequest('GET', 'https://example.com');
         $response = (new ResponseFactory())->createResponse(200);
-        $options = new ClientOptions();
 
         $transport = new MockTransport($response);
 
-        static::assertSame($response, $transport->send($request, $options));
+        $this->assertSame($response, $transport->send($request));
     }
 }

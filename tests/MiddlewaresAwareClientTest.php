@@ -48,8 +48,8 @@ class MiddlewaresAwareClientTest extends TestCase
         // empty logs
         TestMiddleware::$logs = [];
 
-        static::assertSame($response, $testClient->sendRequest($request));
-        static::assertSame([
+        $this->assertSame($response, $testClient->sendRequest($request));
+        $this->assertSame([
             'four-pre',
             'three-pre',
             'two-pre',
@@ -79,12 +79,12 @@ class MiddlewaresAwareClientTest extends TestCase
         $testClient = new MiddlewaresAwareClient($client, $middlewares);
 
         // Assert before add middleware
-        static::assertSame($middlewares, $this->getNonPublicProperty($testClient, 'middlewares'));
+        $this->assertSame($middlewares, $this->getNonPublicProperty($testClient, 'middlewares'));
 
         $testClient->add($five = new TestMiddleware('five'));
         $middlewares = $this->getNonPublicProperty($testClient, 'middlewares');
 
         // Assert after add new middleware
-        static::assertSame($five, end($middlewares));
+        $this->assertSame($five, end($middlewares));
     }
 }

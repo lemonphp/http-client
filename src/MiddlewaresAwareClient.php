@@ -62,7 +62,7 @@ class MiddlewaresAwareClient implements ClientInterface
     {
         $handler = new ClientHandler($this->client);
 
-        foreach($this->middlewares as $middleware) {
+        foreach ($this->middlewares as $middleware) {
             $handler = new MiddlewareHandler($middleware, $handler);
         }
 
