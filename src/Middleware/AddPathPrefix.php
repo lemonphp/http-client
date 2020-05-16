@@ -6,21 +6,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
+use LogicException;
 
-/**
- * The UserAgent middleware
- *
- * @package     Lemon\Http\Client\Middleware
- * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
- * @copyright   LemonPHP Team
- * @license     The MIT License
- */
-final class UserAgent implements MiddlewareInterface
+final class AddPathPrefix implements MiddlewareInterface
 {
     /**
      * @var string
      */
-    private $userAgent;
+    private $prefix;
 
     /**
      * Force replace
@@ -30,22 +23,35 @@ final class UserAgent implements MiddlewareInterface
     private $force = false;
 
     /**
-     * @param string $userAgent
+     * @param string $prefix
      */
-    public function __construct(string $userAgent = null)
+    public function __construct(string $prefix)
     {
-        $this->userAgent = $userAgent ?: sprintf('HTTPClient PHP/%s', PHP_VERSION);
+        $this->prefix = $prefix;
+
+        if (empty($this->path)) {
+            throw new LogicException('Path can not empty');
+        }
     }
 
     /**
+     * Adds a prefix in the beginning of the URL's path.
+     *
+     * The prefix is not added if that prefix is already on the URL's path (exclude `force = true`).
+     * This will fail on the edge case of the prefix being repeated, for example if `https://example.com/api/api/foo`
+     * is a valid URL on the server and the configured prefix is `/api`.
+     *
      * @param  \Psr\Http\Message\RequestInterface $request
      * @param  \Lemon\Http\Client\RequestHandlerInterface $handler
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function process(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($this->force || !$request->hasHeader('User-Agent')) {
-            $request = $request->withHeader('User-Agent', $this->userAgent);
+        $path = $request->getUri()->getPath();
+
+        // Add path prefix
+        if ($this->force || substr($path, 0, strlen($this->prefix)) !== $this->prepix) {
+            $request = $request->withUri($request->getUri()->withPath($this->prefix . $path));
         }
 
         return $handler->handle($request);

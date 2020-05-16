@@ -8,28 +8,37 @@
 [![Software License](https://img.shields.io/github/license/lemonphp/http-client.svg)](LICENSE)
 
 
-## Main features
+## TODO
 
 - [x] Make interfaces
-- [ ] Implement curl transport
-- [ ] Implement stream transport
-- [x] Implement mockup transport
-- [x] Implement simple client
-- [x] Implement middleware client
-- [ ] Implement async client
-- [ ] Implement batch client
-- [ ] Implement pool client
-- [ ] Implement cookie middleware
-- [ ] Implement headers middleware
-- [ ] Implement uri middleware
-- [ ] Implement history middleware
-- [ ] Implement log middleware
-- [x] Implement chain middleware
+  - [x] Transport interface
+  - [x] Middleware interface
+  - [x] Request handler interface
+
+- [ ] Implement transports
+  - [ ] Implement curl transport
+  - [ ] Implement stream transport
+  - [x] Implement mockup transport
+
+- [ ] Implement clients
+  - [x] Implement simple client
+  - [x] Implement middleware client
+  - [ ] Implement async client
+  - [ ] Implement batch client
+  - [ ] Implement pool client
+
+- [ ] Implement middlewares
+  - [x] Implement chain middleware
+  - [ ] Implement cookie middleware
+  - [ ] Implement headers middleware
+  - [ ] Implement uri middleware
+  - [ ] Implement log middleware
+  - [ ] Implement user-agent middleware
+  - [ ] Implement authenticate middleware
 
 ## Requirements
 
 * php >=7.2
-* ext-curl
 
 ## Installation
 

@@ -6,21 +6,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
+use LogicException;
 
-/**
- * The UserAgent middleware
- *
- * @package     Lemon\Http\Client\Middleware
- * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
- * @copyright   LemonPHP Team
- * @license     The MIT License
- */
-final class UserAgent implements MiddlewareInterface
+final class AddHost implements MiddlewareInterface
 {
     /**
      * @var string
      */
-    private $userAgent;
+    private $host;
 
     /**
      * Force replace
@@ -30,11 +23,15 @@ final class UserAgent implements MiddlewareInterface
     private $force = false;
 
     /**
-     * @param string $userAgent
+     * @param string $host
      */
-    public function __construct(string $userAgent = null)
+    public function __construct(string $host)
     {
-        $this->userAgent = $userAgent ?: sprintf('HTTPClient PHP/%s', PHP_VERSION);
+        $this->host = $host;
+
+        if (empty($this->host)) {
+            throw new LogicException('Host can not empty');
+        }
     }
 
     /**
@@ -44,8 +41,9 @@ final class UserAgent implements MiddlewareInterface
      */
     public function process(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($this->force || !$request->hasHeader('User-Agent')) {
-            $request = $request->withHeader('User-Agent', $this->userAgent);
+        // Add host
+        if ($this->force || $request->getUri()->getHost() === '') {
+            $request = $request->withUri($request->getUri()->withHost($this->host));
         }
 
         return $handler->handle($request);
