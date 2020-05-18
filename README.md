@@ -29,12 +29,12 @@
 
 - [ ] Implement middlewares
   - [x] Implement chain middleware
-  - [ ] Implement cookie middleware
-  - [ ] Implement headers middleware
+  - [x] Implement cookie middleware
+  - [x] Implement headers middleware
   - [ ] Implement uri middleware
   - [ ] Implement log middleware
-  - [ ] Implement user-agent middleware
-  - [ ] Implement authenticate middleware
+  - [x] Implement user-agent middleware
+  - [x] Implement authenticate middleware
 
 ## Requirements
 

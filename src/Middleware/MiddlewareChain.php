@@ -2,6 +2,7 @@
 
 namespace Lemon\Http\Client\Middleware;
 
+use InvalidArgumentException;
 use Lemon\Http\Client\Handler\MiddlewareHandler;
 use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
@@ -9,30 +10,39 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * The HTTP client
+ * The chain middleware
  *
  * @package     Lemon\Http\Client\Middleware
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
-class MiddlewaresChain implements MiddlewareInterface
+class MiddlewareChain implements MiddlewareInterface
 {
     /**
      * Middeware list
      *
      * @var \Lemon\Http\Client\MiddlewareInterface[]
      */
-    protected $middlewares;
+    protected $middlewareChain;
 
     /**
      * Constructor
      *
-     * @param array $middlewares
+     * @param array $middlewareChain
+     * @throws \InvalidArgumentException
      */
-    public function __construct(array $middlewares)
+    public function __construct(array $middlewareChain)
     {
-        $this->middlewares = $middlewares;
+        foreach ($middlewareChain as $middleware) {
+            if (!$middleware instanceof MiddlewareInterface) {
+                throw new InvalidArgumentException(
+                    'Members of the authentication chain must be of type ' . MiddlewareInterface::class
+                );
+            }
+        }
+
+        $this->middlewareChain = $middlewareChain;
     }
 
     /**
@@ -43,7 +53,7 @@ class MiddlewaresChain implements MiddlewareInterface
      */
     public function add(MiddlewareInterface $middleware)
     {
-        $this->middlewares[] = $middleware;
+        $this->middlewareChain[] = $middleware;
     }
 
     /**
@@ -53,7 +63,7 @@ class MiddlewaresChain implements MiddlewareInterface
      */
     public function process(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        foreach ($this->middlewares as $middleware) {
+        foreach ($this->middlewareChain as $middleware) {
             $handler = new MiddlewareHandler($middleware, $handler);
         }
 
