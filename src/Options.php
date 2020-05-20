@@ -33,6 +33,7 @@ class Options implements ArrayAccess, Countable
     final public function __construct(array $options = [])
     {
         $resolver = new OptionsResolver();
+
         $this->configureOptions($resolver);
         $this->resolved = $resolver->resolve($options);
     }
@@ -45,7 +46,7 @@ class Options implements ArrayAccess, Countable
      */
     public function __isset($name)
     {
-        return array_key_exists($name, $this->resolved);
+        return \array_key_exists($name, $this->resolved);
     }
 
     /**
@@ -121,7 +122,7 @@ class Options implements ArrayAccess, Countable
      */
     public function count()
     {
-        return count($this->resolved);
+        return \count($this->resolved);
     }
     // @codeCoverageIgnoreEnd
 

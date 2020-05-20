@@ -138,6 +138,36 @@ final class Cookie
     }
 
     /**
+     * Creates a new cookie without any attribute validation.
+     *
+     * @param string         $name
+     * @param string|null    $value
+     * @param int            $maxAge
+     * @param string|null    $domain
+     * @param string|null    $path
+     * @param bool           $secure
+     * @param bool           $httpOnly
+     * @param \DateTimeInterface|null $expires  Expires attribute is HTTP 1.0 only and should be avoided.
+     */
+    public static function createWithoutValidation(
+        string $name,
+        ?string $value = null,
+        ?int $maxAge = null,
+        ?string $domain = null,
+        ?string $path = null,
+        bool $secure = false,
+        bool $httpOnly = false,
+        DateTimeInterface $expires = null
+    ) {
+        $cookie = new self('name', null, null, $domain, $path, $secure, $httpOnly, $expires);
+        $cookie->name = $name;
+        $cookie->value = $value;
+        $cookie->maxAge = $maxAge;
+
+        return $cookie;
+    }
+
+    /**
      * @see https://github.com/symfony/symfony/blob/master/src/Symfony/Component/BrowserKit/Cookie.php
      *
      * @param  string $dateValue
@@ -182,6 +212,104 @@ final class Cookie
     }
 
     /**
+     * Validates the name attribute.
+     *
+     * @see http://tools.ietf.org/search/rfc2616#section-2.2
+     *
+     * @param  string $name
+     * @return void
+     * @throws \InvalidArgumentException if the name is empty or contains invalid characters
+     */
+    private static function validateName(string $name): void
+    {
+        if (empty($name)) {
+            throw new InvalidArgumentException('The name cannot be empty');
+        }
+
+        // Name attribute is a token as per spec in RFC 2616
+        if (preg_match('/[\x00-\x20\x22\x28-\x29\x2C\x2F\x3A-\x40\x5B-\x5D\x7B\x7D\x7F]/', $name)) {
+            throw new InvalidArgumentException(\sprintf('The cookie name "%s" contains invalid characters.', $name));
+        }
+    }
+
+    /**
+     * Validates a value.
+     *
+     * @see http://tools.ietf.org/html/rfc6265#section-4.1.1
+     *
+     * @param  string|null $value
+     * @return void
+     * @throws \InvalidArgumentException if the value contains invalid characters
+     */
+    private static function validateValue(?string $value): void
+    {
+        if ($value !== null) {
+            if (preg_match('/[^\x21\x23-\x2B\x2D-\x3A\x3C-\x5B\x5D-\x7E]/', $value)) {
+                throw new InvalidArgumentException(
+                    \sprintf('The cookie value "%s" contains invalid characters.', $value)
+                );
+            }
+        }
+    }
+
+    /**
+     * Validates a Max-Age attribute.
+     *
+     * @param  int|null $maxAge
+     * @return void
+     * @throws \InvalidArgumentException if the Max-Age is not an empty or integer value
+     */
+    private static function validateMaxAge(?int $maxAge): void
+    {
+        if ($maxAge !== null) {
+            if (!\is_int($maxAge)) {
+                throw new InvalidArgumentException('Max-Age must be integer');
+            }
+        }
+    }
+
+    /**
+     * Remove the leading '.' and lowercase the domain as per spec in RFC 6265.
+     *
+     * @see http://tools.ietf.org/html/rfc6265#section-4.1.2.3
+     * @see http://tools.ietf.org/html/rfc6265#section-5.1.3
+     * @see http://tools.ietf.org/html/rfc6265#section-5.2.3
+     *
+     * @param  string|null $domain
+     * @return string
+     */
+    private static function normalizeDomain(?string $domain): string
+    {
+        if ($domain !== null) {
+            $domain = \ltrim(\strtolower($domain), '.');
+        }
+
+        return $domain;
+    }
+
+    /**
+     * Processes path as per spec in RFC 6265.
+     *
+     * @see http://tools.ietf.org/html/rfc6265#section-5.1.4
+     * @see http://tools.ietf.org/html/rfc6265#section-5.2.4
+     *
+     * @param  string|null $path
+     * @return string
+     */
+    private static function normalizePath(?string $path): string
+    {
+        if ($path !== null) {
+            $path = \rtrim($path, '/');
+        }
+
+        if (empty($path) || ('/' !== \substr($path, 0, 1))) {
+            $path = '/';
+        }
+
+        return $path;
+    }
+
+    /**
      * @param string         $name
      * @param string|null    $value
      * @param int|null       $maxAge
@@ -203,48 +331,18 @@ final class Cookie
         bool $httpOnly = false,
         DateTimeInterface $expires = null
     ) {
-        $this->validateName($name);
-        $this->validateValue($value);
-        $this->validateMaxAge($maxAge);
+        self::validateName($name);
+        self::validateValue($value);
+        self::validateMaxAge($maxAge);
 
         $this->name = $name;
         $this->value = $value;
         $this->maxAge = $maxAge;
         $this->expires = $expires;
-        $this->domain = $this->normalizeDomain($domain);
-        $this->path = $this->normalizePath($path);
+        $this->domain = self::normalizeDomain($domain);
+        $this->path = self::normalizePath($path);
         $this->secure = $secure;
         $this->httpOnly = $httpOnly;
-    }
-
-    /**
-     * Creates a new cookie without any attribute validation.
-     *
-     * @param string         $name
-     * @param string|null    $value
-     * @param int            $maxAge
-     * @param string|null    $domain
-     * @param string|null    $path
-     * @param bool           $secure
-     * @param bool           $httpOnly
-     * @param \DateTimeInterface|null $expires  Expires attribute is HTTP 1.0 only and should be avoided.
-     */
-    public static function createWithoutValidation(
-        string $name,
-        ?string $value = null,
-        ?int $maxAge = null,
-        ?string $domain = null,
-        ?string $path = null,
-        bool $secure = false,
-        bool $httpOnly = false,
-        DateTimeInterface $expires = null
-    ) {
-        $cookie = new self('name', null, null, $domain, $path, $secure, $httpOnly, $expires);
-        $cookie->name = $name;
-        $cookie->value = $value;
-        $cookie->maxAge = $maxAge;
-
-        return $cookie;
     }
 
     /**
@@ -286,7 +384,7 @@ final class Cookie
      */
     public function withValue(?string $value): self
     {
-        $this->validateValue($value);
+        self::validateValue($value);
 
         $new = clone $this;
         $new->value = $value;
@@ -323,7 +421,7 @@ final class Cookie
      */
     public function withMaxAge(?int $maxAge): self
     {
-        $this->validateMaxAge($maxAge);
+        self::validateMaxAge($maxAge);
 
         $new = clone $this;
         $new->maxAge = $maxAge;
@@ -404,7 +502,7 @@ final class Cookie
     public function withDomain(?string $domain): self
     {
         $new = clone $this;
-        $new->domain = $this->normalizeDomain($domain);
+        $new->domain = self::normalizeDomain($domain);
 
         return $new;
     }
@@ -451,7 +549,7 @@ final class Cookie
     public function withPath(?string $path): self
     {
         $new = clone $this;
-        $new->path = $this->normalizePath($path);
+        $new->path = self::normalizePath($path);
 
         return $new;
     }
@@ -538,9 +636,9 @@ final class Cookie
     public function isValid(): bool
     {
         try {
-            $this->validateName($this->name);
-            $this->validateValue($this->value);
-            $this->validateMaxAge($this->maxAge);
+            self::validateName($this->name);
+            self::validateValue($this->value);
+            self::validateMaxAge($this->maxAge);
         } catch (InvalidArgumentException $e) {
             return false;
         }
@@ -549,100 +647,10 @@ final class Cookie
     }
 
     /**
-     * Validates the name attribute.
-     *
-     * @see http://tools.ietf.org/search/rfc2616#section-2.2
-     *
-     * @param  string $name
-     * @return void
-     * @throws \InvalidArgumentException if the name is empty or contains invalid characters
-     */
-    private function validateName(string $name): void
-    {
-        if (empty($name)) {
-            throw new InvalidArgumentException('The name cannot be empty');
-        }
-
-        // Name attribute is a token as per spec in RFC 2616
-        if (preg_match('/[\x00-\x20\x22\x28-\x29\x2C\x2F\x3A-\x40\x5B-\x5D\x7B\x7D\x7F]/', $name)) {
-            throw new InvalidArgumentException(\sprintf('The cookie name "%s" contains invalid characters.', $name));
-        }
-    }
-
-    /**
-     * Validates a value.
-     *
-     * @see http://tools.ietf.org/html/rfc6265#section-4.1.1
-     *
-     * @param  string|null $value
-     * @return void
-     * @throws \InvalidArgumentException if the value contains invalid characters
-     */
-    private function validateValue(?string $value): void
-    {
-        if ($value !== null) {
-            if (preg_match('/[^\x21\x23-\x2B\x2D-\x3A\x3C-\x5B\x5D-\x7E]/', $value)) {
-                throw new InvalidArgumentException(
-                    \sprintf('The cookie value "%s" contains invalid characters.', $value)
-                );
-            }
-        }
-    }
-
-    /**
-     * Validates a Max-Age attribute.
-     *
-     * @param  int|null $maxAge
-     * @return void
-     * @throws \InvalidArgumentException if the Max-Age is not an empty or integer value
-     */
-    private function validateMaxAge(?int $maxAge): void
-    {
-        if ($maxAge !== null) {
-            if (!\is_int($maxAge)) {
-                throw new InvalidArgumentException('Max-Age must be integer');
-            }
-        }
-    }
-
-    /**
-     * Remove the leading '.' and lowercase the domain as per spec in RFC 6265.
-     *
-     * @see http://tools.ietf.org/html/rfc6265#section-4.1.2.3
-     * @see http://tools.ietf.org/html/rfc6265#section-5.1.3
-     * @see http://tools.ietf.org/html/rfc6265#section-5.2.3
-     *
-     * @param  string|null $domain
      * @return string
      */
-    private function normalizeDomain(?string $domain): string
+    public function __toString(): string
     {
-        if ($domain !== null) {
-            $domain = \ltrim(\strtolower($domain), '.');
-        }
-
-        return $domain;
-    }
-
-    /**
-     * Processes path as per spec in RFC 6265.
-     *
-     * @see http://tools.ietf.org/html/rfc6265#section-5.1.4
-     * @see http://tools.ietf.org/html/rfc6265#section-5.2.4
-     *
-     * @param  string|null $path
-     * @return string
-     */
-    private function normalizePath(?string $path): string
-    {
-        if ($path !== null) {
-            $path = \rtrim($path, '/');
-        }
-
-        if (empty($path) || ('/' !== \substr($path, 0, 1))) {
-            $path = '/';
-        }
-
-        return $path;
+        return \sprintf('%s=%s', $this->getName(), $this->getValue());
     }
 }

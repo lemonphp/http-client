@@ -35,7 +35,7 @@ final class BasicAuth implements AuthenticationInterface
      */
     public function authenticate(RequestInterface $request): RequestInterface
     {
-        $authorizationHeader = sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->username, $this->password)));
+        $authorizationHeader = \sprintf('Basic %s', \base64_encode(sprintf('%s:%s', $this->username, $this->password)));
 
         return $request->withHeader('Authorization', $authorizationHeader);
     }

@@ -15,24 +15,25 @@
   - [x] Middleware interface
   - [x] Request handler interface
 
-- [ ] Implement transports
-  - [ ] Implement curl transport
-  - [ ] Implement stream transport
+- [x] Implement transports
+  - [x] Implement curl transport
+  - [x] Implement stream transport
   - [x] Implement mockup transport
 
 - [ ] Implement clients
   - [x] Implement simple client
   - [x] Implement middleware client
+  - [x] Implement http method client
   - [ ] Implement async client
   - [ ] Implement batch client
   - [ ] Implement pool client
 
-- [ ] Implement middlewares
+- [x] Implement middlewares
   - [x] Implement chain middleware
   - [x] Implement cookie middleware
   - [x] Implement headers middleware
-  - [ ] Implement uri middleware
-  - [ ] Implement log middleware
+  - [x] Implement uri middleware
+  - [x] Implement log middleware
   - [x] Implement user-agent middleware
   - [x] Implement authenticate middleware
 

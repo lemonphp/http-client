@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Lemon\Http\Client\MiddlewaresAwareClient;
+use Lemon\Http\Client\MiddlewareAwareClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Slim\Psr7\Factory\RequestFactory;
@@ -16,7 +16,7 @@ use Slim\Psr7\Factory\ResponseFactory;
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
-class MiddlewaresAwareClientTest extends TestCase
+class MiddlewareAwareClientTest extends TestCase
 {
     use NonPublicAccessible;
 
@@ -43,7 +43,7 @@ class MiddlewaresAwareClientTest extends TestCase
             new TestMiddleware('four'),
         ];
 
-        $testClient = new MiddlewaresAwareClient($client, $middlewares);
+        $testClient = new MiddlewareAwareClient($client, $middlewares);
 
         // empty logs
         TestMiddleware::$logs = [];
@@ -76,7 +76,7 @@ class MiddlewaresAwareClientTest extends TestCase
             new TestMiddleware('four'),
         ];
 
-        $testClient = new MiddlewaresAwareClient($client, $middlewares);
+        $testClient = new MiddlewareAwareClient($client, $middlewares);
 
         // Assert before add middleware
         $this->assertSame($middlewares, $this->getNonPublicProperty($testClient, 'middlewares'));

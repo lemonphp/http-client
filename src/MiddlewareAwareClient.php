@@ -9,14 +9,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * The HTTP client with middlewares client
+ * The HTTP client with middleware client
  *
  * @package     Lemon\Http\Client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
-class MiddlewaresAwareClient implements ClientInterface
+class MiddlewareAwareClient implements ClientInterface
 {
     /**
      * @var \Psr\Http\Client\ClientInterface

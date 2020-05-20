@@ -3,7 +3,7 @@
 namespace Tests\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface;
-use Lemon\Http\Client\Middleware\MiddlewaresChain;
+use Lemon\Http\Client\Middleware\MiddlewareChain;
 use Lemon\Http\Client\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\RequestFactory;
@@ -18,7 +18,7 @@ use Tests\TestMiddleware;
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
-class MiddlewaresChainTest extends TestCase
+class MiddlewareChainTest extends TestCase
 {
     /**
      * Test middleware shoule process
@@ -42,7 +42,7 @@ class MiddlewaresChainTest extends TestCase
             new TestMiddleware('three'),
             new TestMiddleware('four'),
         ];
-        $chain = new MiddlewaresChain($middlewares);
+        $chain = new MiddlewareChain($middlewares);
 
         // empty logs
         TestMiddleware::$logs = [];

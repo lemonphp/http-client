@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Lemon\Http\Client\Client;
-use Lemon\Http\Client\ClientOptions;
 use Lemon\Http\Client\TransportInterface;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\RequestFactory;

@@ -3,9 +3,9 @@
 namespace Lemon\Http\Client\Cookie;
 
 use Countable;
-use Iterator;
 use IteratorAggregate;
 use SplObjectStorage;
+use Traversable;
 
 /**
  * Cookie Jar holds a set of Cookies.
@@ -75,31 +75,31 @@ final class CookieJar implements Countable, IteratorAggregate
     }
 
     /**
-     * Returns the cookies.
+     * Returns all cookies.
      *
-     * @return \Iterator<Cookie>
+     * @return \Traversable
      */
-    public function getCookies(): Iterator
+    public function getCookies(): Traversable
     {
-        $match = function ($matchCookie) {
+        $match = function () {
             return true;
         };
 
-        return $this->findCookies($match);
+        return $this->filter($match);
     }
 
     /**
      * Returns all matched cookies.
      *
-     * @return \Iterator<Cookie>
+     * @return \Traversable
      */
-    public function getMatchedCookies(Cookie $cookie): Iterator
+    public function getMatchedCookies(Cookie $cookie): Traversable
     {
         $match = function ($matchCookie) use ($cookie) {
             return $matchCookie->match($cookie);
         };
 
-        return $this->findCookies($match);
+        return $this->filter($match);
     }
 
     /**
@@ -115,10 +115,10 @@ final class CookieJar implements Countable, IteratorAggregate
     /**
      * Sets the cookies and removes any previous one.
      *
-     * @param  array|Cookie[] $cookies
+     * @param  \Traversable|array $cookies
      * @return void
      */
-    public function setCookies(array $cookies): void
+    public function setCookies($cookies): void
     {
         $this->clear();
         $this->addCookies($cookies);
@@ -127,10 +127,10 @@ final class CookieJar implements Countable, IteratorAggregate
     /**
      * Adds some cookies.
      *
-     * @param  array|Cookie[] $cookies
+     * @param  \Traversable|array $cookies
      * @return void
      */
-    public function addCookies(array $cookies): void
+    public function addCookies($cookies): void
     {
         foreach ($cookies as $cookie) {
             $this->addCookie($cookie);
@@ -140,10 +140,10 @@ final class CookieJar implements Countable, IteratorAggregate
     /**
      * Removes some cookies.
      *
-     * @param \Iterator<Cookie> $cookies
+     * @param  \Traversable|array $cookies
      * @return void
      */
-    public function removeCookies(Iterator $cookies): void
+    public function removeCookies($cookies): void
     {
         foreach ($cookies as $cookie) {
             $this->removeCookie($cookie);
@@ -180,9 +180,7 @@ final class CookieJar implements Countable, IteratorAggregate
             return $match;
         };
 
-        $cookies = $this->findCookies($match);
-
-        $this->removeCookies($cookies);
+        $this->removeCookies($this->filter($match));
     }
 
     /**
@@ -196,9 +194,7 @@ final class CookieJar implements Countable, IteratorAggregate
             return $matchCookie->isExpired();
         };
 
-        $cookies = $this->findCookies($math);
-
-        $this->removeCookies($cookies);
+        $this->removeCookies($this->filter($math));
     }
 
     /**
@@ -214,7 +210,7 @@ final class CookieJar implements Countable, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return $this->cookies->count();
     }
@@ -222,7 +218,7 @@ final class CookieJar implements Countable, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return clone $this->cookies;
     }
@@ -231,9 +227,9 @@ final class CookieJar implements Countable, IteratorAggregate
      * Finds cookies based on a matching function.
      *
      * @param  callable $match The matching function
-     * @return \Iterator<Cookie>
+     * @return \Traversable<Cookie>
      */
-    private function findCookies(callable $match): Iterator
+    private function filter(callable $match): Traversable
     {
         foreach ($this->cookies as $cookie) {
             if ($match($cookie)) {
