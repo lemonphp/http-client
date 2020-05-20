@@ -56,8 +56,8 @@ jobs:
           - 7.3
           - 7.4
         COMPOSER_ARGS:
-          - prefer-lowest
-          - prefer-stable
+          - --prefer-lowest
+          - --prefer-stable
     steps:
       - name: Checkout
         uses: actions/checkout@v2
