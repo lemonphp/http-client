@@ -3,7 +3,7 @@
 namespace Lemon\Http\Client;
 
 use Lemon\Http\Client\Handler\ClientHandler;
-use Lemon\Http\Client\Handler\MiddlewareHandler;
+use Lemon\Http\Client\Middleware\MiddlewareChain;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -26,18 +26,30 @@ class MiddlewareAwareClient implements ClientInterface
     /**
      * @var array
      */
-    private $middlewares;
+    private $middlewareChain;
 
     /**
      * Constructor
      *
      * @param  \Psr\Http\Client\ClientInterface $client
-     * @param  array $middlewares
+     * @param  array $middlewareChain
      */
-    public function __construct(ClientInterface $client, array $middlewares = [])
+    public function __construct(ClientInterface $client, array $middlewareChain = [])
     {
         $this->client = $client;
-        $this->middlewares = $middlewares;
+        $this->middlewareChain = $middlewareChain;
+    }
+
+    /**
+     * Forward to client
+     *
+     * @param  string $name
+     * @param  array  $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return \call_user_func([$this->client, $name], ...$arguments);
     }
 
     /**
@@ -48,7 +60,7 @@ class MiddlewareAwareClient implements ClientInterface
      */
     public function add(MiddlewareInterface $middleware)
     {
-        $this->middlewares[] = $middleware;
+        $this->middlewareChain[] = $middleware;
     }
 
     /**
@@ -61,11 +73,8 @@ class MiddlewareAwareClient implements ClientInterface
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         $handler = new ClientHandler($this->client);
+        $middleware = new MiddlewareChain($this->middlewareChain);
 
-        foreach ($this->middlewares as $middleware) {
-            $handler = new MiddlewareHandler($middleware, $handler);
-        }
-
-        return $handler->handle($request);
+        return $middleware->process($request, $handler);
     }
 }

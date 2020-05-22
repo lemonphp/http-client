@@ -2,7 +2,6 @@
 
 namespace Lemon\Http\Client\Transport;
 
-use Lemon\Http\Client\ClientOptions;
 use Lemon\Http\Client\TransportInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

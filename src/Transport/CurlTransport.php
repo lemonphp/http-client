@@ -4,44 +4,13 @@ namespace Lemon\Http\Client\Transport;
 
 use Lemon\Http\Client\Exception\NetworkException;
 use Lemon\Http\Client\Helper;
-use Lemon\Http\Client\Options;
 use Lemon\Http\Client\TransportInterface;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 
 class CurlTransport implements TransportInterface
 {
-    /**
-     * @var \Psr\Http\Message\StreamFactoryInterface
-     */
-    private $streamFactory;
-
-    /**
-     * @var \Psr\Http\Message\ResponseFactoryInterface
-     */
-    private $responseFactory;
-
-    /**
-     * @var \Lemon\Http\Client\Options
-     */
-    private $options;
-
-    /**
-     * @param \Psr\Http\Message\StreamFactoryInterface $streamFactory
-     * @param \Psr\Http\Message\ResponseFactoryInterface $responseFactory
-     * @param \Lemon\Http\Client\Options $options
-     */
-    public function __construct(
-        StreamFactoryInterface $streamFactory,
-        ResponseFactoryInterface $responseFactory,
-        Options $options
-    ) {
-        $this->streamFactory = $streamFactory;
-        $this->responseFactory = $responseFactory;
-        $this->options = $options;
-    }
+    use OptionsAwareTransport;
 
     /**
      * Sends a PSR-7 request and returns a PSR-7 response.
@@ -58,9 +27,9 @@ class CurlTransport implements TransportInterface
         $curlOptions = [
             CURLOPT_CUSTOMREQUEST => $request->getMethod(),
             CURLOPT_RETURNTRANSFER => false,
-            CURLOPT_FOLLOWLOCATION => $this->options->follow_location,
+            CURLOPT_FOLLOWLOCATION => $this->options['follow_location'],
             CURLOPT_HEADER => false,
-            CURLOPT_CONNECTTIMEOUT => $this->options->timeout,
+            CURLOPT_CONNECTTIMEOUT => $this->options['timeout'],
             CURLOPT_FILE => $resource,
         ];
 
@@ -113,7 +82,7 @@ class CurlTransport implements TransportInterface
 
         $stream = Helper::copyResourceToStream($resource, $this->streamFactory);
 
-        if ($this->options->follow_location) {
+        if ($this->options['follow_location']) {
             $headers = Helper::filterLastResponseHeaders($headers);
         }
 

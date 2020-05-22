@@ -26,18 +26,32 @@ final class HttpMethodsClient implements ClientInterface, HttpMethodsClientInter
     private $streamFactory;
 
     /**
-     * Undocumented function
+     * Constructor
      *
+     * @param \Psr\Http\Client\ClientInterface          $client
+     * @param \Psr\Http\Message\StreamFactoryInterface  $streamFactory
      * @param \Psr\Http\Message\RequestFactoryInterface $requestFactory
      */
     public function __construct(
         ClientInterface $client,
-        RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory
+        StreamFactoryInterface $streamFactory,
+        RequestFactoryInterface $requestFactory
     ) {
         $this->client = $client;
-        $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
+        $this->requestFactory = $requestFactory;
+    }
+
+    /**
+     * Forward to client
+     *
+     * @param  string $name
+     * @param  array  $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return \call_user_func([$this->client, $name], ...$arguments);
     }
 
     /**
@@ -167,7 +181,7 @@ final class HttpMethodsClient implements ClientInterface, HttpMethodsClientInter
             $request = $request->withBody($body);
         }
 
-        return $this->client->sendRequest($request);
+        return $this->sendRequest($request);
     }
 
     /**

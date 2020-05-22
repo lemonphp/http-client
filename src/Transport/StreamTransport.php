@@ -7,41 +7,11 @@ use Lemon\Http\Client\Exception\RequestException;
 use Lemon\Http\Client\Helper;
 use Lemon\Http\Client\TransportInterface;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 
 class StreamTransport implements TransportInterface
 {
-    /**
-     * @var \Psr\Http\Message\StreamFactoryInterface
-     */
-    private $streamFactory;
-
-    /**
-     * @var \Psr\Http\Message\ResponseFactoryInterface
-     */
-    private $responseFactory;
-
-    /**
-     * @var \Lemon\Http\Client\Options
-     */
-    private $options;
-
-    /**
-     * @param \Psr\Http\Message\StreamFactoryInterface $streamFactory
-     * @param \Psr\Http\Message\ResponseFactoryInterface $responseFactory
-     * @param \Lemon\Http\Client\Options $options
-     */
-    public function __construct(
-        StreamFactoryInterface $streamFactory,
-        ResponseFactoryInterface $responseFactory,
-        $options = []
-    ) {
-        $this->streamFactory = $streamFactory;
-        $this->responseFactory = $responseFactory;
-        $this->options = $options;
-    }
+    use OptionsAwareTransport;
 
     /**
      * Sends a PSR-7 request and returns a PSR-7 response.
@@ -58,8 +28,8 @@ class StreamTransport implements TransportInterface
                 'header' => Helper::serializeHeadersFromPsr7Format($request->getHeaders()),
                 'protocol_version' => $request->getProtocolVersion(),
                 'ignore_errors' => true,
-                'timeout' => $this->options->timeout,
-                'follow_location' => $this->options->follow_location,
+                'timeout' => $this->options['timeout'],
+                'follow_location' => $this->options['follow_location'],
             ],
         ];
 
@@ -84,7 +54,7 @@ class StreamTransport implements TransportInterface
 
         $headers = \stream_get_meta_data($resource)['wrapper_data'] ?? [];
 
-        if ($this->options->follow_location) {
+        if ($this->options['follow_location']) {
             $headers = Helper::filterLastResponseHeaders($headers);
         }
 

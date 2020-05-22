@@ -34,7 +34,7 @@ final class History implements MiddlewareInterface
     {
         $startAt = \microtime(true);
 
-        $response = $handler($request);
+        $response = $handler->handle($request);
 
         $duration = \microtime(true) - $startAt;
 

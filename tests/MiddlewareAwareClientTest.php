@@ -36,14 +36,14 @@ class MiddlewareAwareClientTest extends TestCase
             ->with($request)
             ->willReturn($response);
 
-        $middlewares = [
+        $middlewareChain = [
             new TestMiddleware('one'),
             new TestMiddleware('two'),
             new TestMiddleware('three'),
             new TestMiddleware('four'),
         ];
 
-        $testClient = new MiddlewareAwareClient($client, $middlewares);
+        $testClient = new MiddlewareAwareClient($client, $middlewareChain);
 
         // empty logs
         TestMiddleware::$logs = [];
@@ -69,22 +69,22 @@ class MiddlewareAwareClientTest extends TestCase
     public function testItShouldAddMiddlewareToList()
     {
         $client = $this->getMockForAbstractClass(ClientInterface::class);
-        $middlewares = [
+        $middlewareChain = [
             new TestMiddleware('one'),
             new TestMiddleware('two'),
             new TestMiddleware('three'),
             new TestMiddleware('four'),
         ];
 
-        $testClient = new MiddlewareAwareClient($client, $middlewares);
+        $testClient = new MiddlewareAwareClient($client, $middlewareChain);
 
         // Assert before add middleware
-        $this->assertSame($middlewares, $this->getNonPublicProperty($testClient, 'middlewares'));
+        $this->assertSame($middlewareChain, $this->getNonPublicProperty($testClient, 'middlewareChain'));
 
         $testClient->add($five = new TestMiddleware('five'));
-        $middlewares = $this->getNonPublicProperty($testClient, 'middlewares');
+        $newMiddlewareChain = $this->getNonPublicProperty($testClient, 'middlewareChain');
 
         // Assert after add new middleware
-        $this->assertSame($five, end($middlewares));
+        $this->assertSame($five, end($newMiddlewareChain));
     }
 }

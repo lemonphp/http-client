@@ -20,7 +20,7 @@ class SetBaseUri implements MiddlewareInterface
      *
      * @param  \Psr\Http\Message\UriInterface $baseUri
      */
-    public function __constructor(UriInterface $baseUri)
+    public function __construct(UriInterface $baseUri)
     {
         $this->baseUri = $baseUri;
     }

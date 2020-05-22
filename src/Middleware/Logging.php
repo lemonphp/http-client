@@ -59,18 +59,11 @@ class Logging implements MiddlewareInterface
 
         // Main header
         $log = \sprintf(
-            '%s %s HTTP/%s',
+            '%s %s HTTP/%s' . \PHP_EOL,
             $request->getMethod(),
             $uri->getPath() . (!empty($uri->getQuery()) ? '?' . $uri->getQuery() : ''),
             $request->getProtocolVersion()
         );
-
-        // Host
-        $log .= \sprintf('Host: %s', $uri->getHost());
-        if ($uri->getPort()) {
-            $log .= \sprintf(':%d', $uri->getPort());
-        }
-        $log .= \PHP_EOL;
 
         // Message
         $log .= $this->formatMessageLog($request);
@@ -121,8 +114,11 @@ class Logging implements MiddlewareInterface
             }
         }
 
+        // \var_dump((string) $message->getBody());
+        // \var_dump((string) $message->getBody());
+
         // Body
-        $log .= \PHP_EOL . ($message->getBody()->getSize() > 0 ? $message->getBody() : 'Empty body');
+        $log .= \PHP_EOL . ($message->getBody()->getSize() > 0 ? $message->getBody()->getContents() : 'Empty body');
 
         return $log;
     }
