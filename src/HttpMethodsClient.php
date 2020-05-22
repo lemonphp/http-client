@@ -8,6 +8,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
+/**
+ * The HTTP methods client class
+ *
+ * @package     Lemon\Http\Client
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class HttpMethodsClient implements ClientInterface, HttpMethodsClientInterface
 {
     /**

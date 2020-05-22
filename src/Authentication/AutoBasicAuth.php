@@ -5,6 +5,16 @@ namespace Lemon\Http\Client\Authentication;
 use Lemon\Http\Client\AuthenticationInterface;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * The auto basic authentication class
+ *
+ * Authenticate request with user info from request's URI
+ *
+ * @package     Lemon\Http\Client\Authentication
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class AuthBasicAuth implements AuthenticationInterface
 {
     /**

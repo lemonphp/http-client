@@ -8,7 +8,14 @@ use SplObjectStorage;
 use Traversable;
 
 /**
+ * The Cookie Jar class
+ *
  * Cookie Jar holds a set of Cookies.
+ *
+ * @package     Lemon\Http\Client\Cookie
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
  */
 final class CookieJar implements Countable, IteratorAggregate
 {

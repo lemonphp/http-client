@@ -1,7 +1,7 @@
 {
   "name": "lemonphp/http-client",
   "type": "library",
-  "description": "PSR-18 compatible HTTP client with middleware support",
+  "description": "The lightweight PSR-18 compatible HTTP client with middleware support",
   "keywords": [
     "http-client",
     "psr-18",
@@ -36,7 +36,6 @@
   },
   "require": {
     "php": "^7.2",
-    "ext-json": "*",
     "psr/http-client": "^1.0",
     "psr/http-factory": "^1.0",
     "psr/http-message": "^1.0",

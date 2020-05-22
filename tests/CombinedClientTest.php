@@ -23,35 +23,43 @@ use Slim\Psr7\Factory\UriFactory;
 
 class CombinedClientTest extends TestHttpClient
 {
+    /**
+     * @var \Psr\Http\Message\UriFactoryInterface
+     */
     protected $uriFactory;
+
+    /**
+     * @var \Psr\Http\Message\ResponseFactoryInterface
+     */
     protected $responseFactory;
 
+    /**
+     * @return \Psr\Http\Client\ClientInterface
+     */
     public function createClient(): ClientInterface
     {
-        $client = new HttpMethodsClient(
-            new MiddlewareAwareClient(
-                new Client(
-                    new StreamTransport(
-                        $this->streamFactory,
-                        $this->responseFactory,
-                    )
-                ),
-                [
-                    new Logging(),
-                    new History(new Journal()),
-                    new Cookie(new CookieJar()),
-                    new UserAgent('Lemon/HtttpClient'),
-                    new Authenticate(new BasicAuth('test-user', '123456789')),
-                    new SetBaseUri($this->uriFactory->createUri('https://httpbin.org')),
-                ]
-            ),
+        $transport = new StreamTransport($this->streamFactory, $this->responseFactory);
+        $client = new Client($transport);
+
+        $middlewareChain = [
+            new Logging(),
+            new History(new Journal()),
+            new Cookie(new CookieJar()),
+            new UserAgent('Lemon/HtttpClient'),
+            new Authenticate(new BasicAuth('test-user', '123456789')),
+            new SetBaseUri($this->uriFactory->createUri('https://httpbin.org')),
+        ];
+
+        return new HttpMethodsClient(
+            new MiddlewareAwareClient($client, $middlewareChain),
             $this->streamFactory,
             $this->requestFactory
         );
-
-        return $client;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function setUp(): void
     {
         $this->uriFactory = new UriFactory();

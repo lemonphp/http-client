@@ -5,6 +5,14 @@ namespace Lemon\Http\Client\History;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * The history entry class
+ *
+ * @package     Lemon\Http\Client\History
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class Entry
 {
     /**

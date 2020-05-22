@@ -5,12 +5,19 @@ namespace Lemon\Http\Client;
 use Psr\Http\Message\ResponseInterface;
 
 /**
+ * The HTTP methods client interface
+ *
  * Convenience HTTP client that integrates the MessageFactory in order to send
  * requests in the following form:.
  *
  * $client->get('/foo');
  *
  * The client also exposes the sendRequest methods of the wrapped HttpClient.
+ *
+ * @package     Lemon\Http\Client
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
  */
 interface HttpMethodsClientInterface
 {

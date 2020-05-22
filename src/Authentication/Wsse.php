@@ -5,6 +5,16 @@ namespace Lemon\Http\Client\Authentication;
 use Lemon\Http\Client\AuthenticationInterface;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * The WSSE authentication class
+ *
+ * Authenticate request with given username and password with WSSE spec
+ *
+ * @package     Lemon\Http\Client\Authentication
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class Wsse implements AuthenticationInterface
 {
     /**

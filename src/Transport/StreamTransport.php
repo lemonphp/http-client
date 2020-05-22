@@ -9,6 +9,14 @@ use Lemon\Http\Client\TransportInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * The Stream transport
+ *
+ * @package     Lemon\Http\Client\Transport
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 class StreamTransport implements TransportInterface
 {
     use OptionsAwareTransport;

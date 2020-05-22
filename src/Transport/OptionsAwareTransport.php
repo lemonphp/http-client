@@ -6,6 +6,16 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * The options aware transport trait
+ *
+ * Allow configure transport options
+ *
+ * @package     Lemon\Http\Client\Transport
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 trait OptionsAwareTransport
 {
     /**

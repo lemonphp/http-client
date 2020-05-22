@@ -6,6 +6,16 @@ use InvalidArgumentException;
 use Lemon\Http\Client\AuthenticationInterface;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * The authentication chain class
+ *
+ * Authenticate request with given authentication chain
+ *
+ * @package     Lemon\Http\Client\Authentication
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class AuthenticationChain implements AuthenticationInterface
 {
     /**

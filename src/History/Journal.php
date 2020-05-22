@@ -10,6 +10,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Traversable;
 
+/**
+ * The journal class
+ *
+ * @package     Lemon\Http\Client\History
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 class Journal implements JournalInterface, Countable, IteratorAggregate
 {
     /**
@@ -105,6 +113,8 @@ class Journal implements JournalInterface, Countable, IteratorAggregate
     }
 
     /**
+     * Get last sent request
+     *
      * @return \Psr\Http\Message\RequestInterface|null
      */
     public function getLastRequest(): ?RequestInterface
@@ -118,6 +128,8 @@ class Journal implements JournalInterface, Countable, IteratorAggregate
     }
 
     /**
+     * Get last received response
+     *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function getLastResponse(): ?ResponseInterface

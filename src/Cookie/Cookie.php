@@ -9,9 +9,16 @@ use InvalidArgumentException;
 use UnexpectedValueException;
 
 /**
- * Cookie Value Object.
+ * The Cookie class
+ *
+ * Cookie Value Object
  *
  * @see http://tools.ietf.org/search/rfc6265
+ *
+ * @package     Lemon\Http\Client\Cookie
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
  */
 final class Cookie
 {
