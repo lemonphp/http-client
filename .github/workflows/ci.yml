@@ -41,13 +41,13 @@ jobs:
       - name: Setting up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.3
+          php-version: 7.4
           tools: phpcs
       - name: Check coding style
         run: phpcs --standard=phpcs.xml.dist
 
   run-test:
-    name: '[PHP] Test PHP${{ matrix.php }} - ${{ matrix.COMPOSER_ARGS }}'
+    name: '[PHP] Test PHP${{ matrix.php }} ${{ matrix.COMPOSER_ARGS }}'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -68,8 +68,9 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, json
-          coverage: xdebug
-          tools: pecl, composer
+          coverage: pcov
+          ini-values: pcov.directory=src
+          tools: composer
       - name: Check PHP
         run: |
           php -v
@@ -87,9 +88,12 @@ jobs:
       - name: Install composer dependencies
         run: composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
       - name: Run tests
-        run: php vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
-      # - name: Update test coverage
-      #   if: matrix.php == '7.4'
-      #   run: |
-      #     composer require php-coveralls/php-coveralls
-      #     php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+        run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+      - name: Update test coverage
+        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'stable')
+        env:
+          COVERALLS_RUN_LOCALLY: 1
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          composer require php-coveralls/php-coveralls
+          php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v

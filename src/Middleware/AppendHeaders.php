@@ -7,6 +7,16 @@ use Psr\Http\Message\ResponseInterface;
 use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
 
+/**
+ * The AppendHeaders middleware
+ *
+ * Append values to some request headers
+ *
+ * @package     Lemon\Http\Client\Middleware
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class AppendHeaders implements MiddlewareInterface
 {
     /**

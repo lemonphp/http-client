@@ -8,6 +8,16 @@ use Lemon\Http\Client\RequestHandlerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * The History middleware
+ *
+ * Record history of request and response
+ *
+ * @package     Lemon\Http\Client\Middleware
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class History implements MiddlewareInterface
 {
     /**

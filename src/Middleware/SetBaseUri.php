@@ -8,6 +8,16 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
+/**
+ * The SetBaseUri middleware
+ *
+ * Set base host and path for request URI
+ *
+ * @package     Lemon\Http\Client\Middleware
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 class SetBaseUri implements MiddlewareInterface
 {
     /**

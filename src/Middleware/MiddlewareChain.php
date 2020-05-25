@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
-class MiddlewareChain implements MiddlewareInterface
+final class MiddlewareChain implements MiddlewareInterface
 {
     /**
      * Middeware list

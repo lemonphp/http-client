@@ -7,6 +7,16 @@ use Lemon\Http\Client\RequestHandlerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * The ContentLength middleware
+ *
+ * Auto set `Content-Length` header
+ *
+ * @package     Lemon\Http\Client\Middleware
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class ContentLength implements MiddlewareInterface
 {
     /**

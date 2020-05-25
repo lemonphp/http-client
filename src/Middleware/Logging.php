@@ -10,7 +10,17 @@ use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
 use Psr\Http\Message\MessageInterface;
 
-class Logging implements MiddlewareInterface
+/**
+ * The Logging middleware
+ *
+ * Log request and response
+ *
+ * @package     Lemon\Http\Client\Middleware
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
+final class Logging implements MiddlewareInterface
 {
     /**
      * @var \Psr\Log\LoggerInterface
@@ -113,9 +123,6 @@ class Logging implements MiddlewareInterface
                 $log .= \sprintf('%s: %s' . \PHP_EOL, $key, $value);
             }
         }
-
-        // \var_dump((string) $message->getBody());
-        // \var_dump((string) $message->getBody());
 
         // Body
         $log .= \PHP_EOL . ($message->getBody()->getSize() > 0 ? $message->getBody()->getContents() : 'Empty body');

@@ -8,6 +8,16 @@ use Lemon\Http\Client\AuthenticationInterface;
 use Lemon\Http\Client\MiddlewareInterface;
 use Lemon\Http\Client\RequestHandlerInterface;
 
+/**
+ * The Authenticate middleware
+ *
+ * Authenticate request by add header
+ *
+ * @package     Lemon\Http\Client\Middleware
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @copyright   LemonPHP Team
+ * @license     The MIT License
+ */
 final class Authenticate implements MiddlewareInterface
 {
     /**

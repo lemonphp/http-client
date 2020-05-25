@@ -10,6 +10,8 @@ use Lemon\Http\Client\RequestHandlerInterface;
 /**
  * The UserAgent middleware
  *
+ * Add or replace UserAgent header
+ *
  * @package     Lemon\Http\Client\Middleware
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
