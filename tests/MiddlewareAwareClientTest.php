@@ -11,7 +11,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 /**
  * The MiddlewareAwareClient test
  *
- * @package     Tests
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

@@ -8,18 +8,29 @@ use Slim\Psr7\Factory\RequestFactory;
 
 class BasicAuthTest extends TestCase
 {
+    /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    protected $requestFactory;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp(): void
+    {
+        $this->requestFactory = new RequestFactory();
+    }
+
     public function testItShouldAuthenticateRequest(): void
     {
-        $request = (new RequestFactory())->createRequest('GET', 'https://httpbin.org/basic-auth/test-user/123456789')
-            ->withHeader('Accept', 'application/json');
+        $request = $this->requestFactory->createRequest('GET', 'https://example.com');
 
-        $this->assertEmpty($request->getHeaderLine('Authorization'));
+        $this->assertFalse($request->hasHeader('Authorization'));
 
-        $request = (new BasicAuth('test-user', '123456789'))->authenticate($request);
+        $request = (new BasicAuth('user', 'pass'))->authenticate($request);
+        $header = \sprintf('Basic %s', \base64_encode('user:pass'));
 
-        $this->assertNotEmpty($request->getHeaderLine('Authorization'));
-
-        $header = $request->getHeaderLine('Authorization');
-        $this->assertSame(\sprintf('Basic %s', \base64_encode('test-user:123456789')), $header);
+        $this->assertTrue($request->hasHeader('Authorization'));
+        $this->assertEquals($header, $request->getHeaderLine('Authorization'));
     }
 }

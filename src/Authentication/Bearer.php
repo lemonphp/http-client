@@ -10,7 +10,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * Authenticate request with given bearer token
  *
- * @package     Lemon\Http\Client\Authentication
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
@@ -38,7 +38,7 @@ final class Bearer implements AuthenticationInterface
      */
     public function authenticate(RequestInterface $request): RequestInterface
     {
-        $authorizationHeader = sprintf('Bearer %s', $this->token);
+        $authorizationHeader = \sprintf('Bearer %s', $this->token);
 
         return $request->withHeader('Authorization', $authorizationHeader);
     }

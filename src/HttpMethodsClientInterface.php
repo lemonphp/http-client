@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * The client also exposes the sendRequest methods of the wrapped HttpClient.
  *
- * @package     Lemon\Http\Client
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

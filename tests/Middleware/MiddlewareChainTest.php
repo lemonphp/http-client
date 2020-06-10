@@ -13,13 +13,32 @@ use Tests\TestMiddleware;
 /**
  * The middlewares chain test
  *
- * @package     Tests\Middleware
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
  */
 class MiddlewareChainTest extends TestCase
 {
+    /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    protected $requestFactory;
+
+    /**
+     * @var \Psr\Http\Message\ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp(): void
+    {
+        $this->requestFactory = new RequestFactory();
+        $this->responseFactory = new ResponseFactory();
+    }
+
     /**
      * Test middleware shoule process
      *
@@ -28,8 +47,8 @@ class MiddlewareChainTest extends TestCase
     public function testItShouldProcessMiddlewaresChain()
     {
         // Prepare data for test
-        $request = (new RequestFactory())->createRequest('GET', 'https://example.com');
-        $response = (new ResponseFactory())->createResponse(StatusCodeInterface::STATUS_OK);
+        $request = $this->requestFactory->createRequest('GET', 'https://example.com');
+        $response = $this->responseFactory->createResponse(StatusCodeInterface::STATUS_OK);
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
         $handler->expects($this->once())
             ->method('handle')

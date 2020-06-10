@@ -11,7 +11,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 /**
  * The client handler test
  *
- * @package     Tests\Handler
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
@@ -19,14 +19,33 @@ use Slim\Psr7\Factory\ResponseFactory;
 class ClientHandlerTest extends TestCase
 {
     /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    protected $requestFactory;
+
+    /**
+     * @var \Psr\Http\Message\ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp(): void
+    {
+        $this->requestFactory = new RequestFactory();
+        $this->responseFactory = new ResponseFactory();
+    }
+
+    /**
      * Test it should call client->sendRequest()
      *
      * @return void
      */
     public function testItShouldCallClientSendRequest()
     {
-        $request = (new RequestFactory())->createRequest('GET', 'https://example.com');
-        $response = (new ResponseFactory())->createResponse(200);
+        $request = $this->requestFactory->createRequest('GET', 'https://example.com');
+        $response = $this->responseFactory->createResponse(200);
 
         $client = $this->getMockForAbstractClass(ClientInterface::class);
         $client->expects($this->once())
@@ -35,6 +54,7 @@ class ClientHandlerTest extends TestCase
             ->willReturn($response);
 
         $testHandler = new ClientHandler($client);
+
         $this->assertSame($response, $testHandler->handle($request));
     }
 }

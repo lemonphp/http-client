@@ -11,7 +11,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * Authenticate request with given authentication chain
  *
- * @package     Lemon\Http\Client\Authentication
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

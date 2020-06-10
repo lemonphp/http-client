@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * Record history of request and response
  *
- * @package     Lemon\Http\Client\Middleware
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

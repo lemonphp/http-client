@@ -10,7 +10,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * Authenticate request with given username and password with WSSE spec
  *
- * @package     Lemon\Http\Client\Authentication
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
@@ -46,9 +46,9 @@ final class Wsse implements AuthenticationInterface
     public function authenticate(RequestInterface $request): RequestInterface
     {
         $nonce = $this->generateNonce();
-        $created = date('c');
+        $created = \date('c');
 
-        $wsse = sprintf(
+        $wsse = \sprintf(
             'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
             $this->username,
             \base64_encode(\sha1($nonce . $created . $this->password, true)),
@@ -66,6 +66,7 @@ final class Wsse implements AuthenticationInterface
      * Generate nonce
      *
      * @see https://stackoverflow.com/questions/18910814/.../31419246#31419246
+     *
      * @return string
      */
     private function generateNonce(): string

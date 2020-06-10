@@ -10,7 +10,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 /**
  * The test class for mockup transport
  *
- * @package     Tests\Transport
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

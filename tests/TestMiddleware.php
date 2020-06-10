@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * The stub middleware class for testing
  *
- * @package     Tests
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

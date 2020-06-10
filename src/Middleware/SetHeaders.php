@@ -12,7 +12,7 @@ use Lemon\Http\Client\RequestHandlerInterface;
  *
  * Set or replace request headers
  *
- * @package     Lemon\Http\Client\Middleware
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

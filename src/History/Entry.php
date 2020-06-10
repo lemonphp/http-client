@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * The history entry class
  *
- * @package     Lemon\Http\Client\History
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

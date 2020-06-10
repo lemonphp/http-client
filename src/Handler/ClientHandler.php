@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * The request handler wrapper a client
  *
- * @package     Lemon\Http\Client\Handler
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

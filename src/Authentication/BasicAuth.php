@@ -10,7 +10,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * Authenticate request with given username and password with basic auth spec
  *
- * @package     Lemon\Http\Client\Authentication
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
@@ -45,7 +45,8 @@ final class BasicAuth implements AuthenticationInterface
      */
     public function authenticate(RequestInterface $request): RequestInterface
     {
-        $authorizationHeader = \sprintf('Basic %s', \base64_encode(sprintf('%s:%s', $this->username, $this->password)));
+        $userInfo = \sprintf('%s:%s', $this->username, $this->password);
+        $authorizationHeader = \sprintf('Basic %s', \base64_encode($userInfo));
 
         return $request->withHeader('Authorization', $authorizationHeader);
     }

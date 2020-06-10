@@ -12,7 +12,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 /**
  * The middleware handler test
  *
- * @package     Tests\Handler
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
@@ -20,14 +20,33 @@ use Slim\Psr7\Factory\ResponseFactory;
 class MiddlewareHandlerTest extends TestCase
 {
     /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    protected $requestFactory;
+
+    /**
+     * @var \Psr\Http\Message\ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp(): void
+    {
+        $this->requestFactory = new RequestFactory();
+        $this->responseFactory = new ResponseFactory();
+    }
+
+    /**
      * Test it should call middleware->process() once
      *
      * @return void
      */
     public function testItShouldCallMiddlewareProcess()
     {
-        $request = (new RequestFactory())->createRequest('GET', 'https://example.com');
-        $response = (new ResponseFactory())->createResponse(200);
+        $request = $this->requestFactory->createRequest('GET', 'https://example.com');
+        $response = $this->responseFactory->createResponse(200);
         $nextHandler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
 
         $middleware = $this->getMockForAbstractClass(MiddlewareInterface::class);
@@ -37,6 +56,7 @@ class MiddlewareHandlerTest extends TestCase
             ->willReturn($response);
 
         $testHandler = new MiddlewareHandler($middleware, $nextHandler);
+
         $this->assertSame($response, $testHandler->handle($request));
     }
 }

@@ -13,7 +13,7 @@ use LogicException;
  *
  * Add or replace `Host` request header
  *
- * @package     Lemon\Http\Client\Middleware
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

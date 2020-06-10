@@ -15,7 +15,7 @@ use UnexpectedValueException;
  *
  * @see http://tools.ietf.org/search/rfc6265
  *
- * @package     Lemon\Http\Client\Cookie
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

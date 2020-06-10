@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * The CURL transport
  *
- * @package     Lemon\Http\Client\Transport
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

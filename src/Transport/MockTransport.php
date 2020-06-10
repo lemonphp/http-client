@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
  * It alway return fixed response.
  * It is very helpful for testing.
  *
- * @package     Lemon\Http\Client\Transport
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

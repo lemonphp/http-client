@@ -11,7 +11,7 @@ use ReflectionProperty;
  *
  * Help access to non-public property and method of an object
  *
- * @package     Tests\Concerns
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT license

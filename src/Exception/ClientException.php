@@ -8,7 +8,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 /**
  * The client exception
  *
- * @package     Lemon\Http\Client\Exception
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

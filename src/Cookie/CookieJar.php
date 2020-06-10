@@ -12,7 +12,7 @@ use Traversable;
  *
  * Cookie Jar holds a set of Cookies.
  *
- * @package     Lemon\Http\Client\Cookie
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License

@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * Allow configure transport options
  *
- * @package     Lemon\Http\Client\Transport
+ * @package     lemonphp/http-client
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @copyright   LemonPHP Team
  * @license     The MIT License
@@ -60,9 +60,18 @@ trait OptionsAwareTransport
      */
     protected function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'follow_location' => false,
-            'timeout' => 10 * 1000,
-        ]);
+        $resolver
+            // follow_location
+            ->define('follow_location')
+            ->allowedTypes('bool')
+            ->default(false)
+            ->info('Allow follow location redirecting')
+
+            // timeout
+            ->define('timeout')
+            ->allowedTypes('int')
+            ->default(10000)
+            ->info('Request timeout in millinsecounds. Default 10000')
+        ;
     }
 }
