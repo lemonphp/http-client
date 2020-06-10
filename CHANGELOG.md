@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased] - YYYY-MM-DD
 
 ### Added
+- Add OAuth 1.0 Authentication class
 - Nothing
 
 ### Changed
+- Update Github Workflows
+- Update dependencies to require `symfony/options-resolver@^5.1`
 - Nothing
 
 ### Deprecated
